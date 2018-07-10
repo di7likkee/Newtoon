@@ -1,0 +1,252 @@
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <iostream>
+#include "map.h"
+
+using namespace sf;
+using namespace std;
+
+float offsetX = 0, offsetY = 0;
+
+class PLAYER {
+public:
+
+	float dx, dy;
+	FloatRect coordinate, endCoordinateTp;
+	bool onGround, check;
+	Sprite s;
+	float currentFrame;
+
+	void init(Texture &image, float time) {
+		s.setTexture(image);
+		coordinate = FloatRect(3 * 32, 12 * 32, 60, 97);
+
+		dx = dy = 0.1;
+		currentFrame = 0;
+		offsetX = 0;
+	}
+
+	PLAYER(Texture &image, float time) {
+		init(image, time);
+	}
+
+	void update(float time) {
+
+		coordinate.left += dx * time; // Перемещение по x
+		Collision(true); // x
+
+		if (!onGround) { 
+			dy = dy + 0.0005*time; // Падение с ускорением
+		}
+		coordinate.top += dy*time;
+		onGround = false;
+		Collision(false); // y
+
+		currentFrame += 0.005*time;
+		if (currentFrame > 6) currentFrame -= 6;
+
+		if (dx == 0) {
+			s.setTextureRect(IntRect(30, 19, 60, 97));
+		}
+		if (dx > 0) {
+			s.setTextureRect(IntRect(180 + (150 * int(currentFrame)), 19, 60, 97));
+		}
+		if (dx < 0) { 
+			s.setTextureRect(IntRect(180 + (150 * int(currentFrame)) + 60, 19, -60, 97)); 
+		}
+
+		s.setPosition(coordinate.left - offsetX, coordinate.top - offsetY);
+
+		dx = 0;
+	}
+
+	void Collision(bool variables) {
+		Clock clock;
+		for (int i(coordinate.top / 32); i < (coordinate.top + coordinate.height) / 32; i++) {
+			for (int j(coordinate.left / 32); j < (coordinate.left + coordinate.width) / 32; j++) {
+				if ((TileMap[i][j] == '0') || (TileMap[i][j] == 'b') || (TileMap[i][j] == 'p') || (TileMap[i][j] == 'd')) {
+					if ((dx > 0) && (variables == true)) {
+						coordinate.left = j * 32 - coordinate.width;
+					}
+					if ((dx < 0) && (variables == true)) {
+						coordinate.left = j * 32 + 32;
+					}
+					if ((dy > 0) && (variables == false)) {
+						coordinate.top = i * 32 - coordinate.height;
+						dy = 0;
+						onGround = true;
+					}
+					if ((dy < 0) && (variables == false)) {
+						coordinate.top = i * 32 + 32;
+						dy = 0;
+					}
+				}
+				if (TileMap[i][j] == '1') {
+					coordinate = endCoordinateTp;
+					update(0);
+					
+				}
+				if (TileMap[i][j] == 'a') {
+					TileMap[i][j] = ' ';
+				}
+
+			}
+		}
+	}
+	
+};
+
+
+bool startGame() {
+	RenderWindow window(VideoMode(1280, 720), "Newton [1.0]");
+
+	Texture texturePlayer, bg, tGround, tTiles, tApple, tDoorOpen, tDoorClosed;
+	texturePlayer.loadFromFile("images/newton-sheet.png");
+	bg.loadFromFile("images/bg.png");
+	tGround.loadFromFile("images/ground.png");
+	tTiles.loadFromFile("images/tiles.png");
+	tApple.loadFromFile("images/apple.png");
+	tDoorClosed.loadFromFile("images/door_closed.png");
+	tDoorOpen.loadFromFile("images/door_open.png");
+
+	texturePlayer.setSmooth(true);
+	bg.setSmooth(true);
+	tGround.setSmooth(true);
+	tTiles.setSmooth(true);
+	tApple.setSmooth(true);
+	tDoorClosed.setSmooth(true);
+	tDoorOpen.setSmooth(true);
+
+	Sprite sBg(bg), sGround(tGround), sTiles(tTiles), sApple(tApple), sDoorOpen(tDoorOpen), sDoorClosed(tDoorClosed);
+
+	PLAYER p(texturePlayer, 0);
+
+	SoundBuffer buffer;
+	buffer.loadFromFile("sounds/jump.ogg");
+	Sound sound(buffer);
+
+
+	Music music;
+	music.openFromFile("sounds/Monkeys_Spinning_Monkeys.ogg");
+	music.play();
+	music.setLoop(true);
+
+
+	Clock clock;
+	float currentFrame = 0;
+
+	while (window.isOpen())
+	{
+		float time = clock.getElapsedTime().asMicroseconds();
+		clock.restart();
+
+		time /= 500;
+
+		if (time > 20) {
+			time = 20;
+		}
+
+		Event event;
+		while (window.pollEvent(event)) {
+			if (event.type == Event::Closed)
+				window.close();
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A))
+		{
+			p.dx = -0.1;
+
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D))
+		{
+			p.dx = 0.1;
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Space)) {
+			if (p.onGround) {
+				p.dy = -0.4;
+				p.onGround = false;
+				sound.play();
+			}
+		}
+		if (Keyboard::isKeyPressed(Keyboard::R))
+		{
+			music.play();
+			music.setLoop(true);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::F))
+		{
+			music.stop();
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::G)) { // Перемещение в начало
+			p.init(texturePlayer, time);
+		}
+
+		p.update(time);
+
+		if ((p.coordinate.left > 400) && ((880 < 150 * 32 - p.coordinate.left))) {
+			offsetX = p.coordinate.left - 400;
+		}
+
+		window.clear(Color::White);
+		window.draw(sBg);
+
+		for (int i(0); i < HEIGHT_MAP; i++) {
+			for (int j(0); j < WIDTH_MAP; j++) {
+				if (TileMap[i][j] == '0') {
+					continue;
+				}
+				if (TileMap[i][j] == ' ') {
+					continue;
+				}
+				if (TileMap[i][j] == 'b') {
+					sGround.setTextureRect(IntRect(160, 0, 32, 32));
+				}
+				if (TileMap[i][j] == 'p') {
+					sGround.setTextureRect(IntRect(160, 288, 32, 32));
+				}
+				if (TileMap[i][j] == '1') {
+					sDoorOpen.setTextureRect(IntRect(0, 0, 64, 128));
+					sDoorOpen.setPosition(j * 32 - offsetX, i * 32 - 32 - offsetY);
+					window.draw(sDoorOpen);
+				}
+				if (TileMap[i][j] == '2') {
+					sDoorClosed.setTextureRect(IntRect(0, 0, 64, 128));
+					sDoorClosed.setPosition(j * 32 + - offsetX, i * 32 - 32 - offsetY);
+					p.endCoordinateTp = FloatRect(j * 32 + 32, i * 32, 60, 97);
+					window.draw(sDoorClosed);
+				}
+				if (TileMap[i][j] == 'a') {
+					sApple.setTextureRect(IntRect(0, 0, 64, 32));
+					sApple.setPosition(j * 32 - offsetX, i * 32 - offsetY);
+					window.draw(sApple);
+				}
+				if (TileMap[i][j] == 'd') {
+					sGround.setTextureRect(IntRect(1 * 32, 10 * 32, 32, 16));
+				}
+
+				if (!((TileMap[i][j] == '1') || (TileMap[i][j] == '2') || (TileMap[i][j] == 'a'))) {
+					sGround.setPosition(j * 32 - offsetX, i * 32 - offsetY);
+					window.draw(sGround);
+				}
+			}
+		}
+		window.draw(p.s);
+		window.display();
+	}
+
+	return 0;
+
+}
+
+void gameRunning() {
+	if (startGame()) {
+		gameRunning();
+	}
+}
+
+int main()
+{
+	gameRunning();
+}

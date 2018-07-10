@@ -1,0 +1,25 @@
+﻿  main.cpp
+main.cpp(28): warning C4305: =: усечение из "double" к "float"
+main.cpp(53): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+main.cpp(59): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+main.cpp(79): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+main.cpp(80): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+main.cpp(86): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+main.cpp(94): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+main.cpp(255): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+main.cpp(264): warning C4244: -=: преобразование "float" в "int", возможна потеря данных
+main.cpp(278): warning C4305: =: усечение из "double" к "float"
+main.cpp(284): warning C4305: =: усечение из "double" к "float"
+main.cpp(288): warning C4305: =: усечение из "double" к "float"
+main.cpp(338): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+main.cpp(344): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  Создание кода
+d:\mario\new_mario\new_mario\main.cpp(196): warning C4715: startMenu: значение возвращается не при всех путях выполнения
+d:\mario\new_mario\new_mario\main.cpp(461): warning C4715: showEndGameMenu: значение возвращается не при всех путях выполнения
+d:\mario\new_mario\new_mario\main.cpp(390): warning C4715: startGame: значение возвращается не при всех путях выполнения
+  8 of 210 functions ( 3.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  new_mario.vcxproj -> D:\mario\new_mario\x64\Release\new_mario.exe
+  new_mario.vcxproj -> D:\mario\new_mario\x64\Release\new_mario.pdb (Full PDB)

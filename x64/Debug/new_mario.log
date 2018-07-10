@@ -1,0 +1,19 @@
+﻿  main.cpp
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(28): warning C4305: =: усечение из "double" в "float"
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(53): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(59): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(79): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(80): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(86): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(94): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(255): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(264): warning C4244: -=: преобразование "float" в "int", возможна потеря данных
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(278): warning C4305: =: усечение из "double" в "float"
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(284): warning C4305: =: усечение из "double" в "float"
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(288): warning C4305: =: усечение из "double" в "float"
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(338): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(344): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(196): warning C4715: startMenu: значение возвращается не при всех путях выполнения
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(390): warning C4715: startGame: значение возвращается не при всех путях выполнения
+d:\labs\курсовые проекты\newtoon\new_mario\new_mario\main.cpp(461): warning C4715: showEndGameMenu: значение возвращается не при всех путях выполнения
+LINK : fatal error LNK1104: не удается открыть файл "sfml-graphics-d.lib"
